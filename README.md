@@ -2,6 +2,14 @@
 
 Exrates is a simple Python application to get exchange rates from https://exchangeratesapi.io/
 
+## Installation
+
+Exrates requires Python3 and depends on Requests library.
+
+```
+pip install exrates
+```
+
 ## Usage
 
 ```
