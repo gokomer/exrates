@@ -26,7 +26,11 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     python_requires='>=3',
     install_requires=['requests'],
-    scripts=['exrates/exrates'],
+    entry_points={
+        'console_scripts': [
+            'exrates = exrates.__main__:main',
+        ],
+    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

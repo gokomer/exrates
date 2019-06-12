@@ -38,5 +38,9 @@ def getRates(params):
         for k,v in formatted_results['rates'].items():
             print(k,v)
 
-if __name__ == "__main__":
+
+def main():
     getRates(getParams)
+
+if __name__ == "__main__":
+    main()
