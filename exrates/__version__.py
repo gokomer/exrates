@@ -1,6 +1,6 @@
 __title__ = 'exrates'
 __description__ = 'Simple exchange rates'
-__url__ = 'http://github'
+__url__ = 'http://github/gokomer/exrates'
 __version__ = '1.0.5'
 __author__ = 'Ömer GÖK'
 __author_email__ = 'omergok@outlook.com'
