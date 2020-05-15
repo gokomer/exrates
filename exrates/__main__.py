@@ -15,27 +15,27 @@ BASE_URL = "https://api.exchangeratesapi.io/"
 def getParams():
     parser = argparse.ArgumentParser(formatter_class = argparse.ArgumentDefaultsHelpFormatter, prog='Exrates')
     parser.add_argument("symbols",
-                        type = str,
-                        help = "Currencies seperated by comma")
+                        type=str,
+                        help="Currencies seperated by comma")
     parser.add_argument("-b", "--base",
                         dest='base',
-                        type = str,
-                        default = "EUR",
-                        help = "Base currency")
+                        type=str,
+                        default="EUR",
+                        help="Base currency")
     parser.add_argument("-i", "--interval",
                         dest='interval',
-                        type = int,
-                        default = 1,
-                        help = "Alarm check interval in seconds")
+                        type=int,
+                        default=1,
+                        help="Alarm check interval in seconds")
     parser.add_argument("-a", "--alarm",
                         dest='alarm',
-                        type = float,
-                        default = 0,
+                        type=float,
+                        default=0,
                         help = "Alarm value to check crossings")
     parser.add_argument('--version', action='version',
                         version=f'{parser.prog} {__version__}')
     results = parser.parse_args()
-    params = dict()
+    params = {}
     params['base'] = f'{results.base.upper()}'
     params['symbols'] = f'{results.symbols.upper()}'
     params['interval'] = results.interval
@@ -59,8 +59,8 @@ def getRates(params):
     response = makeRequestForRates(params)
     try:
         formatted_results = response.json()
-    except:
-        print(f'Cannot parse the response')
+    except Exception as e:
+        print(f'Cannot parse the response: {e}')
     else:
         return formatted_results
 
@@ -68,8 +68,8 @@ def getRates(params):
 def printRates(params):
     formatted_results = getRates(params)
     print(f"Base currency is: {formatted_results['base']}")
-    for k,v in formatted_results['rates'].items():
-        print(k,v)
+    for k, v in formatted_results['rates'].items():
+        print(k, v)
 
 
 class AlarmWorker(Thread):
@@ -85,17 +85,17 @@ class AlarmWorker(Thread):
         while True:
             try:
                 response = self.getRates_callback()
-            except:
-                print('Cannot fetch rates for alarm')
+            except Exception as e:
+                print(f'Cannot fetch rates for alarm: {e}')
                 break
             else:
                 new_state = self.alarm_state
                 if response is not None:
                     new_state = np.array(list(response['rates'].values())) > self.alarm_value
-                    
+
                 if self.alarm_state is not None:
                     active_alarm_indices = np.where(new_state != self.alarm_state)[0]
-                    if len(active_alarm_indices):
+                    if len(active_alarm_indices) > 0:
                         currencies = np.array(list(response['rates'].keys()))
                         rates = np.array(list(response['rates'].values()))
                         active_alarms = dict(zip(currencies[active_alarm_indices], rates[active_alarm_indices]))
@@ -106,10 +106,8 @@ class AlarmWorker(Thread):
 
 
 def setAlarmForRates(params):
-    interval = params['interval']
     if params['alarm'] > 0:
-        callback = lambda params=params: getRates(params)
-        alarm_worker = AlarmWorker(params['interval'], params['alarm'], callback)
+        alarm_worker = AlarmWorker(params['interval'], params['alarm'], lambda params=params: getRates(params))
         alarm_worker.setDaemon(True)
         alarm_worker.start()
         return True
