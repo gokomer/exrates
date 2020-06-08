@@ -3,7 +3,6 @@ import requests
 import argparse
 from requests.exceptions import HTTPError
 from requests.exceptions import Timeout
-from threading import Thread
 import time
 import numpy as np
 
@@ -72,10 +71,9 @@ def printRates(params):
         print(k, v)
 
 
-class AlarmWorker(Thread):
+class AlarmWorker:
 
     def __init__(self, interval, alarm_value, getRates_callback):
-        Thread.__init__(self)
         self.interval = interval
         self.alarm_value = alarm_value
         self.getRates_callback = getRates_callback
@@ -108,8 +106,7 @@ class AlarmWorker(Thread):
 def setAlarmForRates(params):
     if params['alarm'] > 0:
         alarm_worker = AlarmWorker(params['interval'], params['alarm'], lambda params=params: getRates(params))
-        alarm_worker.setDaemon(True)
-        alarm_worker.start()
+        alarm_worker.run()
         return True
     return False
 
@@ -121,5 +118,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    while True:
-        time.sleep(1)
