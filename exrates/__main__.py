@@ -3,7 +3,6 @@ import requests
 import argparse
 from requests.exceptions import HTTPError
 from requests.exceptions import Timeout
-from threading import Thread
 import time
 import numpy as np
 
