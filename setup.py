@@ -6,7 +6,7 @@ import setuptools
 here = os.path.abspath(os.path.dirname(__file__))
 
 about = {}
-#with open(os.path.join(here, 'exrates', '__version__.py'), 'r', 'utf-8') as f:
+# with open(os.path.join(here, 'exrates', '__version__.py'), 'r', 'utf-8') as f:
 with open(f"{os.path.abspath(os.path.dirname(__file__))}/exrates/__version__.py") as f:
     exec(f.read(), about)
 
@@ -25,7 +25,7 @@ setuptools.setup(
     license=about['__license__'],
     packages=setuptools.find_packages(),
     python_requires='>=3',
-    install_requires=['requests'],
+    install_requires=['requests', 'numpy'],
     entry_points={
         'console_scripts': [
             'exrates = exrates.__main__:main',

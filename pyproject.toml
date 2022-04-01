@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "exrates"
+version = "1.0.7"
+description = "Exrates is a simple Python application to get exchange rates"
+authors = ["Ömer Gök"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.27.1"
+numpy = "^1.22.3"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^4.0.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+exrates = "exrates.__main__:main"

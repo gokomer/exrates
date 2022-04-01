@@ -7,20 +7,25 @@ import time
 import numpy as np
 
 
-__version__ = "1.0"
-BASE_URL = "https://api.exchangeratesapi.io/"
+__version__ = "1.0.7"
+BASE_URL = "https://api.exchangerate.host/latest"
 
 
 def getParams():
-    parser = argparse.ArgumentParser(formatter_class = argparse.ArgumentDefaultsHelpFormatter, prog='Exrates')
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter, prog='Exrates')
     parser.add_argument("symbols",
                         type=str,
                         help="Currencies seperated by comma")
     parser.add_argument("-b", "--base",
                         dest='base',
                         type=str,
-                        default="EUR",
+                        default="USD",
                         help="Base currency")
+    parser.add_argument("-c", "--amount",
+                        dest='amount',
+                        type=str,
+                        default="1",
+                        help="Amount")
     parser.add_argument("-i", "--interval",
                         dest='interval',
                         type=int,
@@ -30,7 +35,7 @@ def getParams():
                         dest='alarm',
                         type=float,
                         default=0,
-                        help = "Alarm value to check crossings")
+                        help="Alarm value to check crossings")
     parser.add_argument('--version', action='version',
                         version=f'{parser.prog} {__version__}')
     results = parser.parse_args()
@@ -39,6 +44,7 @@ def getParams():
     params['symbols'] = f'{results.symbols.upper()}'
     params['interval'] = results.interval
     params['alarm'] = results.alarm
+    params['amount'] = results.amount
     return params
 
 
