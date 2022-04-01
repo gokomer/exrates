@@ -39,12 +39,7 @@ def getParams():
     parser.add_argument('--version', action='version',
                         version=f'{parser.prog} {__version__}')
     results = parser.parse_args()
-    params = {}
-    params['base'] = f'{results.base.upper()}'
-    params['symbols'] = f'{results.symbols.upper()}'
-    params['interval'] = results.interval
-    params['alarm'] = results.alarm
-    params['amount'] = results.amount
+    params = {'base': f'{results.base.upper()}', 'symbols': f'{results.symbols.upper()}', 'interval': results.interval, 'alarm': results.alarm, 'amount': results.amount}
     return params
 
 
